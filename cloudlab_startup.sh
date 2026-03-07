@@ -19,3 +19,4 @@ sudo chmod 666 /var/run/docker.sock
 docker run hello-world
  
 echo ">> To build image run: docker build -t dockerfuzzer ."
+docker build -t dockerfile .
