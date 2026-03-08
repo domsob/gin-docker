@@ -16,6 +16,8 @@ TINYLOG_LEVEL="trace"
 LLM="gemma2:2b"
 MODEL="${LLM}"
 
+GINOPTION="${1:-}"  # Which Option to run the script on, this is so we run the profiler only once
+
 cd "${PROJECT_DIR}"
 
 # =====================
