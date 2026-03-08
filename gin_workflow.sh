@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# This was translated from the original workfliw via OpenAI, 27/02/2026
+# This was translated from the original workflow via OpenAI, 27/02/2026
 # =========
 # Settings
 # =========
