@@ -16,3 +16,6 @@ sudo docker run -it -p 8888:8888 -v /path_to_folder/config.ini:/opt/config.ini g
 ```
 
 Jupyter will be available at http://localhost:8888
+
+To start ollama:
+docker exec -it be9a3c1e27c6 ollama serve # be9a3c1e27c6 is the current container
