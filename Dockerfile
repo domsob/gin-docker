@@ -76,7 +76,7 @@ RUN bash /opt/pull_models.sh --build /opt/config.ini
 # Clone repositories: GIN and JCodec
 # ---------------------------------------------------------------
 RUN git clone https://github.com/gintool/gin.git /opt/gin && \
-    cd /opt/gin && git checkout llm
+    cd /opt/gin && git checkout llm && git submodule update --init --recursive --force
 
 RUN git clone https://github.com/jcodec/jcodec.git /opt/jcodec && \
     cd /opt/jcodec && git checkout 7e52834
