@@ -5,18 +5,23 @@ set -euo pipefail
 # =========
 # Settings
 # =========
-PROJECT_DIR="/opt/jcodec"
-PROJECT_NAME="jcodec"
+proj=$1
+PROJECT_DIR="/opt/$proj"
+PROJECT_NAME="$proj"
 GIN_JAR="/opt/gin/build/gin.jar"
 MAVEN_HOME="/root/.sdkman/candidates/maven/current"
 RESULTS_DIR="${PROJECT_DIR}/results"
 TINYLOG_LEVEL="trace"
 
 # LLM / model tag used in filenames + Gin args
-LLM="gemma2:2b"
+#LLM="gemma2:2b"
+LLM="gpt-oss:120b"
 MODEL="${LLM}"
 
-GINOPTION="${1:-}"  # Which Option to run the script on, this is so we run the profiler only once
+export OLLAMA_SERVER='https://ollama.com'
+export OLLAMA_API_KEY=<YOUR-OLLAMA-KEY>
+
+GINOPTION="${2:-}"  # Which Option to run the script on, this is so we run the profiler only once
 
 cd "${PROJECT_DIR}"
 
@@ -83,7 +88,7 @@ case $GINOPTION in
 # =========================
     LocalPatchCat | lpc | LPC |localpatchcat | LOCALPATCHCAT)
         mkdir -p "${RESULTS_DIR}"
-        
+        echo "Starting Gin with PatchCat"
         java -Dtinylog.level="${TINYLOG_LEVEL}" \
           -cp "${GIN_JAR}" \
           gin.util.LocalSearchRuntime \
@@ -94,12 +99,14 @@ case $GINOPTION in
           -o "${RESULTS_DIR}/${PROJECT_NAME}.LocalSearchRuntime_COMBINED_50_output.${MODEL}.csv" \
           -mavenHome "${MAVEN_HOME}" \
           -timeoutMS 10000 \
-          -et gin.edit.llm.LLMMaskedStatement \
+          -et gin.edit.llm.LLMReplaceStatement \
           -mt "${LLM}" \
           -pc \
-          -pt MASKED \
+          -pt MEDIUM \
           -in 100 \
-          &> "${RESULTS_DIR}/${PROJECT_NAME}.LocalSearchRuntime_LLM_MASKED_50_stderrstdout.${MODEL}.txt"  
+          -mn 10 \
+          &> "${RESULTS_DIR}/${PROJECT_NAME}.LocalSearchRuntime_LLM_MEDIUM_50_stderrstdout.${MODEL}.txt"
+    ;;
     *)
         echo "Option is unknown"
     ;;
